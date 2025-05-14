@@ -2,7 +2,7 @@
 
 [![MATLAB R2023a](https://img.shields.io/badge/MATLAB-R2023a-blue)](https://www.mathworks.com/products/matlab.html)
 
-A MATLAB application for mapping neural receptive fields. Users can select one or more quadrants for focused RF mapping and subdivide those regions into finer grids to probe local RF structure. The app supports dense noise stimuli (default) and allows users to load custom stimuli such as natural scenes or sparse noise. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
+A MATLAB application for mapping neural receptive fields. Users can select one or more quadrants for focused RF mapping or subdivide those quadrants into finer grids to probe local RF structure. The app supports default dense noise stimuli, and it allows loading custom patterns, sparse noise, or natural scenes. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
 
 ---
 
@@ -12,6 +12,8 @@ A MATLAB application for mapping neural receptive fields. Users can select one o
 * **Psychtoolbox** (for precise timing and rendering).
 * **Image Processing Toolbox** (for loading/manipulating movie frames).
 * **App Designer** (for the `.mlapp` GUI file).
+* 
+* **Recommended:** Dual-monitor setup (one for stimulus, one for control). If using a single monitor, set screenNumber to 0 on macOS or 1 on Windows.
 
 ---
 
@@ -44,7 +46,7 @@ RFStimGUI
    * Click **Load Gamma Table** to upload your monitor’s gamma calibration (`.mat`), or use the default `NormGamTab_20250129.mat` supplied.
 2. **Configure Parameters**:
 
-   * Quadrant(s) selected from 2×2, 3×3, or full)
+   * Quadrant(s) selected from 2×2, 3×3, or full
    * Viewing distance (cm)
    * Tile size (deg)
    * Initial gray screen duration (s)
@@ -58,7 +60,7 @@ RFStimGUI
 
 ```matlab
 playRFStim( ...
-    rfMovie,             ... % movData: your 3‑D stimulus array
+    rfMovie,             ... % movData: 3-D stimulus 
     20,                  ... % tileDeg (deg)
     1,                   ... % durInitGray (s)
     2,                   ... % nCycle
