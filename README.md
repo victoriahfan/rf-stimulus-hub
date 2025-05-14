@@ -20,7 +20,7 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 ## Repository Structure
 
 ```plaintext
-RFStimulusHub/            # Repository root
+rf-stimulus-hub/            # Repository root
 ├── RFStimGUI.mlapp       # App Designer GUI
 ├── playRFStim.m          # Core stimulus-presentation routine
 ├── deg2px.m              # Converts degrees → pixels
@@ -88,7 +88,6 @@ playRFStim( ...
 * **Non‑contiguous region selection**: Arbitrary quadrant combinations.
 * **Global abort**: ESC works even when GUI is unfocused.
 * **Standalone compilation**: Run GUI without MATLAB.
-* **Custom patterns**: Support user‑defined shapes (gratings, spots, etc.).
 
 ---
 
