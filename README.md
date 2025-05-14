@@ -2,7 +2,7 @@
 
 [![MATLAB R2023a](https://img.shields.io/badge/MATLAB-R2023a-blue)](https://www.mathworks.com/products/matlab.html)
 
-A MATLAB App for RF mapping of neural populations. It divides the display into user-defined regions, beginning with quadrants and moving to more refined grids, to present visual stimuli (e.g., dense noise, sparse noise, natural scenes) in targeted areas. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
+A MATLAB application for mapping neural receptive fields. Users can select one or more quadrants for focused RF mapping and subdivide those regions into finer grids to probe local RF structure. The app supports dense noise stimuli (default) and allows users to load custom stimuli such as natural scenes or sparse noise. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
 
 ---
 
