@@ -13,9 +13,7 @@ A MATLAB application for mapping neural receptive fields. Users can select one o
 * **Image Processing Toolbox** (for loading/manipulating movie frames).
 * **App Designer** (for the `.mlapp` GUI file).
   
-## Recommended
-
-Dual-monitor setup (one for stimulus, one for control). If using a single monitor, check that screenNumber is set to 0 on macOS or 1 on Windows.
+**Recommended:** Dual-monitor setup (one for stimulus, one for control). If using a single monitor, check that screenNumber is set to 0 on macOS or 1 on Windows.
 
 ---
 
