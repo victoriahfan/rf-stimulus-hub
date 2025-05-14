@@ -9,10 +9,10 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 ## Requirements
 
 * **MATLAB R2023a**. App created and tested with this MATLAB version. Older versions may be incompatible.
-*      **App Designer**. Only required if modifying `.mlapp`.
+* **App Designer**. Required if modifying `.mlapp`.
 * **Psychtoolbox**
-* **Image Processing Toolbox** 
-  
+* **Image Processing Toolbox**
+ 
 **Recommended:** Dual-monitor setup (one for stimulus, one for control). If using a single monitor, check that screenNumber is set to 0 on macOS or 1 on Windows.
 
 ---
