@@ -1,87 +1,92 @@
-# RF Stimulus Hub
+# Receptive Field (RF) Stimulus Hub
 
-A MATLAB App for receptive field mapping of neural populations. It subdivides the visual field into user-defined quadrants, and presents dense noise or other visual stimuli in specified region(s). Includes interactive quadrant and grid preview with mouse-based region selection.
+[![MATLAB R2023a](https://img.shields.io/badge/MATLAB-R2023a-blue)](https://www.mathworks.com/products/matlab.html)
+
+A MATLAB App for RF mapping of neural populations. It divides the display into user-defined regions, beginning with quadrants and moving to more refined grids, to present visual stimuli (e.g., dense noise, sparse noise, natural scenes) in targeted areas. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
+
+---
 
 ## Requirements
 
-* **MATLAB R2023a** (created and tested). Older versions may have compatibility issues. Will be compiled into standalone app in the future.
-* **Psychtoolbox** (for reliable stimulus timing and graphics)
-* **Image Processing Toolbox** (for handling movie frames)
-* **App Designer**
+* **MATLAB R2023a** (created and tested). Older versions may be incompatible. Standalone compilation recommended.
+* **Psychtoolbox** (for precise timing and rendering).
+* **Image Processing Toolbox** (for loading/manipulating movie frames).
+* **App Designer** (for the `.mlapp` GUI file).
 
-## Installation
+---
 
-1. Clone the repo:
+## Repository Structure
 
-   ```bash
-   git clone https://github.com/victoriahfan/rf-stimulus-hub.git
-   ```
-2. Make sure Psychtoolbox is installed in MATLAB:
-
-   ```matlab
-   DownloadPsychtoolbox;
-   ```
-
-## File Structure
-
-```
-RFStimulusMapper/        # Repository root
-├─ RFStimGUI.mlapp       # App Designer GUI
-├─ playRFStim.m          # Core stimulus-presentation function
-├─ deg2px.m              # Converts visual degrees to screen pixels
-├─ computeRegionRect.m   # Defines screen-region rectangles
-├─ computeGridRegionPx.m # Computes tile and mask pixel regions
-├─ checkEscape.m         # Polls for ESC key press
-└─ README.md             # This file
+```plaintext
+RFStimulusHub/            # Repository root
+├── RFStimGUI.mlapp       # App Designer GUI
+├── playRFStim.m          # Core stimulus-presentation routine
+├── deg2px.m              # Converts degrees → pixels
+├── computeRegionRect.m   # Defines named screen-region rectangles
+├── computeGridRegionPx.m # Computes tile/mask pixel coordinates
+├── checkEscape.m         # Monitors ESC key for safe abort
+└── README.md             # This file
 ```
 
-## Usage
+---
 
-### Launching the GUI
+## Quick Start
 
-In MATLAB:
+### Launch GUI
 
 ```matlab
 RFStimGUI
 ```
 
-1. **Load Movie**: Click **Load Movie** and select a `.mat` file containing `rfMovie` or custom movie (m×n×frames).
-2. **Set Parameters**:
+1. **Load Movie & Gamma Table**: The app includes a default `rfMovie.mat` (dense noise stimulus) and a `NormGamTab_20250129.mat`. You can either:
 
+   * Click **Load Movie** to upload your own stimulus movie (`.mat` with a 3‑D array) or use the provided one.
+   * Click **Load Gamma Table** to upload your monitor’s gamma calibration (`.mat`), or use the default `NormGamTab_20250129.mat` supplied.
+2. **Configure Parameters**:
+
+   * Quadrant(s) selected from 2×2, 3×3, or full)
    * Viewing distance (cm)
    * Tile size (deg)
-   * Grid dimensions (select or custom)
-   * Initial gray duration (s)
+   * Initial gray screen duration (s)
    * Stimulus duration (s)
-   * ISI (s)
+   * Inter-stimulus interval (ISI, s)
    * Number of cycles
-3. **Preview**: Click on the grid preview to verify subdivisions.
-4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** to abort.
+3. **Preview**: Click on the preview area to verify region selection and gamma-corrected display.
+4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** at any time to abort safely.
 
-### Command-Line Invocation
-
-Bypass the GUI:
+### Command‐Line Usage
 
 ```matlab
-movData = load('rfMovie.mat');
-playRFStim(rfMovie, ...
-   'tileDeg', 20, ...
-   'durInitGray', 10, ...
-   'nCycle', 10, ...
-   'isi', 4, ...
-   'regionOpt', 'full', ...
-   'viewingDistanceCm', 20, ...
-   'screenNumber', 1);
+playRFStim( ...
+    rfMovie,             ... % movData: your 3‑D stimulus array
+    20,                  ... % tileDeg (deg)
+    1,                   ... % durInitGray (s)
+    2,                   ... % nCycle
+    4,                   ... % isi (s)
+    'regionOpt','full',  ... % region selection
+    'viewingDistanceCm',20,... % viewing distance
+    'screenNumber',0        ... % display screen index
+);
 ```
-
-## Function Reference
-
-* **playRFStim.m**: Main loop that displays movie frames, unmasks tiles, and enforces timing.
-* **deg2px.m**: `pixels = deg2px(deg, distCm, screenPxlWidth, screenCmWidth)`
-* **computeRegionRect.m**: Returns \[x y width height] for named regions (e.g., 'full', 'tl', 'br').
-* **computeGridRegionPx.m**: Calculates pixel coordinates for each tile and mask within a region.
-* **checkEscape.m**: Non-blocking check for ESC key to stop stimulus.
 
 ---
 
-*© 2025, Victoria Fan, Higley Lab, Yale School of Medicine*
+## Function Reference
+
+* **playRFStim.m**: Main loop—renders frames (with gamma correction), unmasks tiles, logs events, enforces timings.
+* **deg2px.m**: `px = deg2px(deg, distCm, screenWidthPx, screenWidthCm)`.
+* **computeRegionRect.m**: Returns `[x y w h]` for regions (`'full', 'tl', 'br', etc.`).
+* **computeGridRegionPx.m**: Calculates pixel rectangles for each tile and mask within a region.
+* **checkEscape.m**: Polls for ESC key to terminate presentation safely.
+
+---
+
+## Future Support
+
+* **Non‑contiguous region selection**: Arbitrary quadrant combinations.
+* **Global abort**: ESC works even when GUI is unfocused.
+* **Custom patterns**: Support user‑defined shapes (gratings, spots, etc.).
+
+---
+
+© 2025 Victoria Fan, Higley Lab, Yale School of Medicine
