@@ -2,16 +2,16 @@
 
 [![MATLAB R2023a](https://img.shields.io/badge/MATLAB-R2023a-blue)](https://www.mathworks.com/products/matlab.html)
 
-A MATLAB application for mapping neural receptive fields. Users can select one or more quadrants for focused RF mapping or subdivide those quadrants into finer grids to probe local RF structure. The app supports default dense noise stimuli, and it allows loading custom patterns, sparse noise, or natural scenes. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
+A MATLAB application for mapping neural receptive fields. Allows users to select one or more quadrants for focused RF mapping or subdivide those quadrants into finer grids to probe local RF structure. The app supports default dense noise stimuli, and it allows loading custom patterns, sparse noise, or natural scenes. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
 
 ---
 
 ## Requirements
 
-* **MATLAB R2023a** (created and tested). Older versions may be incompatible. Standalone compilation recommended.
-* **Psychtoolbox** (for precise timing and rendering).
-* **Image Processing Toolbox** (for loading/manipulating movie frames).
-* **App Designer** (for the `.mlapp` GUI file).
+* **MATLAB R2023a**. App created and tested with this version of MATLAB. Older versions may be incompatible.
+* **Psychtoolbox**
+* **Image Processing Toolbox** 
+* **App Designer**. Only required if modifying the `.mlapp` file.
   
 **Recommended:** Dual-monitor setup (one for stimulus, one for control). If using a single monitor, check that screenNumber is set to 0 on macOS or 1 on Windows.
 
@@ -42,8 +42,8 @@ RFStimGUI
 
 1. **Load Movie & Gamma Table**: The app includes a default `rfMovie.mat` (dense noise stimulus) and a `NormGamTab_20250129.mat`. You can either:
 
-   * Click **Load Movie** to upload your own stimulus movie (`.mat` with a 3‑D array) or use the provided one.
-   * Click **Load Gamma Table** to upload your monitor’s gamma calibration (`.mat`), or use the default `NormGamTab_20250129.mat` supplied.
+   * Click **Load Movie** to upload your own stimulus movie (`.mat` with a 3‑D array) or use the provided default.
+   * Click **Load Gamma Table** to upload your monitor’s gamma calibration (`.mat`), or use the provided default.
 2. **Configure Parameters**:
 
    * Quadrant(s) selected from 2×2, 3×3, or full
@@ -87,6 +87,7 @@ playRFStim( ...
 
 * **Non‑contiguous region selection**: Arbitrary quadrant combinations.
 * **Global abort**: ESC works even when GUI is unfocused.
+* **Standalone compilation**: Run GUI without MATLAB.
 * **Custom patterns**: Support user‑defined shapes (gratings, spots, etc.).
 
 ---
