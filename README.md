@@ -8,10 +8,10 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 
 ## Requirements
 
-* **MATLAB R2023a**. App created and tested with this version of MATLAB. Older versions may be incompatible.
+* **MATLAB R2023a**. App created and tested with this MATLAB version. Older versions may be incompatible.
+      **App Designer**. Only required if modifying `.mlapp`.
 * **Psychtoolbox**
 * **Image Processing Toolbox** 
-* **App Designer**. Only required if modifying the `.mlapp` file.
   
 **Recommended:** Dual-monitor setup (one for stimulus, one for control). If using a single monitor, check that screenNumber is set to 0 on macOS or 1 on Windows.
 
@@ -51,7 +51,7 @@ RFStimGUI
    * Tile size (deg)
    * Initial gray screen duration (s)
    * Stimulus duration (s)
-   * Inter-stimulus interval (ISI, s)
+   * Inter-stimulus interval (s)
    * Number of cycles
 3. **Preview**: Click on the preview area to verify region selection and gamma-corrected display.
 4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** at any time to abort safely.
