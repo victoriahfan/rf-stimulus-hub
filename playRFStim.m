@@ -1,4 +1,5 @@
 function playRFStim(movData, tileDeg, durInitGray, nCycle, isi, varargin)
+
 %% PLAYRFSTIM   Receptive-field mapping stimulus presentation
 %   Press ESC to abort early (no CSV saved).
 %
@@ -17,43 +18,54 @@ function playRFStim(movData, tileDeg, durInitGray, nCycle, isi, varargin)
 %
 % OUTPUT:
 %   None (writes “stim_YYYYMMDD_HHMM.csv” listing the random tile order)
-% 
+%
 % USAGE:
 %   playRFStim2(movData, tileDeg, durInitGray, nCycle, isi, Name,Value,…)
 %
 % Written by Victoria Fan (08/2022); last modified 05/2025.
 
-%% Parse & validate inputs
-isPosScalar    = @(x) validateattributes(x, {'numeric'}, {'scalar', '>', 0});
-isNonNegScalar = @(x) validateattributes(x, {'numeric'}, {'scalar', '>=', 0});
-isCharOrStr    = @(s) ischar(s) || isstring(s);
-isScreenNum    = @(x) validateattributes(x, {'numeric'}, {'scalar', 'integer', '>=', 1});
-isGammaTab     = @(x) isnumeric(x) && size(x,2)==3;
+%% — Psychtoolbox setup (so Screen('Screens') is available) —
+PsychDefaultSetup(2);
+Screen('Preference','SkipSyncTests',1);
+Screen('Preference','Verbosity',0);
 
+% Ask PTB which screen IDs exist:
+availableScreens = Screen('Screens');    % e.g. [0] on mac, [0 1] on a two‐monitor PC
+defaultScreen    = max(availableScreens);
+
+%% Validators
+isPosScalar    = @(x) validateattributes(x,{'numeric'},{'scalar','positive'});
+isNonNegScalar = @(x) validateattributes(x,{'numeric'},{'scalar','nonnegative'});
+isIntGE1       = @(x) validateattributes(x,{'numeric'},{'scalar','integer','positive'});
+isCharOrStr    = @(s) ischar(s)||isstring(s);
+% Validator that also checks membership:
+isScreenNum    = @(x) assert( isnumeric(x) && isscalar(x) && any(x==availableScreens), ...
+    'screenNumber must be one of [%s]', num2str(availableScreens) );
+isGammaTab     = @(x) isnumeric(x)&&size(x,2)==3;
+
+%% Parser
 p = inputParser;
 p.FunctionName  = mfilename;
 p.CaseSensitive = false;
 
-% Required
-addRequired(p, 'movData', @(x) validateattributes(x, {'numeric'}, {'3d', 'nonempty'}));
-addRequired(p, 'tileDeg', isPosScalar);
-addRequired(p, 'durInitGray', isNonNegScalar);
-addRequired(p, 'nCycle', @(x) validateattributes(x, {'numeric'}, {'scalar', 'integer', '>=', 1}));
-addRequired(p, 'isi', isNonNegScalar);
+% Required positional:
+addRequired(p, 'movData',       @(x) validateattributes(x,{'numeric'},{'3d','nonempty'}));
+addRequired(p, 'tileDeg',       isPosScalar);
+addRequired(p, 'durInitGray',   isNonNegScalar);
+addRequired(p, 'nCycle',        isIntGE1);
+addRequired(p, 'isi',           isNonNegScalar);
 
-% Name/value pairs
-addParameter(p, 'regionOpt', 'full', isCharOrStr);
-addParameter(p, 'viewingDistanceCm', 20, isPosScalar);
-addParameter(p, 'screenNumber', 1, isScreenNum);
-addParameter(p, 'gammaTable', [], isGammaTab);
+% Optional name–value (with dynamic default for screenNumber):
+addParameter(p, 'regionOpt',         'full',            isCharOrStr);
+addParameter(p, 'viewingDistanceCm', 20,                isPosScalar);
+addParameter(p, 'screenNumber',      defaultScreen,     isScreenNum);
+addParameter(p, 'gammaTable',        [],                isGammaTab);
 
+% Parse both positional + name/value:
 parse(p, movData, tileDeg, durInitGray, nCycle, isi, varargin{:});
-R = p.Results; 
+R = p.Results;
 
 %% Psychtoolbox & screen setup
-PsychDefaultSetup(2);
-Screen('Preference', 'SkipSyncTests', 1);
-Screen('Preference', 'Verbosity', 0);
 
 [window, windowRect] = PsychImaging('OpenWindow', R.screenNumber, .5);
 Priority(MaxPriority(window));
