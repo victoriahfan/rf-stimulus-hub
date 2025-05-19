@@ -11,16 +11,26 @@ function playRFStim(movData, tileDeg, durInitGray, nCycle, isi, varargin)
 %   isi                scalar ≥0 — inter‐stimulus gray interval (s)
 %
 % Name–Value Pairs:
-%   'regionOpt'         char — region specifier (default 'full'; e.g. 'tl','se+e')
+%   'regionOpt'         string — region code(s) e.g.:
+%                           'fullscreen'     centered square of size tileSizePx
+%                           'full','left','right','top','bottom'
+%                           'tl','tr','bl','br'  quadrants
+%                           'nw','n','ne','w','center','e','sw','s','se'  thirds
+%                           or combinations like 'se+e' or 'left,top'
 %   'viewingDistanceCm' scalar — viewing distance for deg→px conversion (default 20)
 %   'screenNumber'      integer — Psychtoolbox screen ID (default 1)
 %   'gammaTable'        numeric Px3 — gamma lookup table (loads first *NormGamTab*.mat if empty)
 %
 % OUTPUT:
-%   None (writes “stim_YYYYMMDD_HHMM.csv” listing the random tile order)
+%   Writes a CSV file named "stim_YYYYMMDD_HHMM.csv" containing five columns:
+%                       Position — tile index in the random sequence (1..nTiles)  
+%                       Row — tile row number (1 at top)  
+%                       Column — tile column number (1 at left)  
+%                       X — horizontal center of that tile, normalized [0=left … 1=right]  
+%                       Y — vertical center of that tile, normalized [0=top  … 1=bottom]
 %
 % USAGE:
-%   playRFStim2(movData, tileDeg, durInitGray, nCycle, isi, Name,Value,…)
+%   playRFStim(rfMovie, 20, 1, 1, 4, 'regionOpt', 'sw+w+s+center', 'viewingDistanceCm', 20, 'ScreenNumber', 1)
 %
 % Written by Victoria Fan (08/2022); last modified 05/2025.
 
@@ -74,9 +84,9 @@ screenYpx = windowRect(4);
 
 %% Calculate tile size in px & sanity check
 displayMM = Screen('DisplaySize', window); % [mm]
-gridSizePx = deg2px(R.tileDeg, R.viewingDistanceCm, screenXpx, displayMM(1));
-if gridSizePx > screenXpx || gridSizePx > screenYpx
-    error('Tile %d px too big for screen [%d×%d].', gridSizePx, screenXpx, screenYpx);
+tileSizePx = deg2px(R.tileDeg, R.viewingDistanceCm, screenXpx, displayMM(1));
+if tileSizePx > screenXpx || tileSizePx > screenYpx
+    error('Tile %d px too big for screen [%d×%d].', tileSizePx, screenXpx, screenYpx);
 end
 
 destRect = [0,0,screenXpx,screenYpx];
@@ -109,9 +119,9 @@ nFrame = size(R.movData, 3);
 movieTextures = arrayfun(@(f) Screen('MakeTexture', window,R.movData(:,:,f)), 1:nFrame);
 
 % Region & mask rectangles
-regionRect = computeRegionRect(R.regionOpt, gridSizePx, screenXpx, screenYpx);
+regionRect = computeRegionRect(R.regionOpt, tileSizePx, screenXpx, screenYpx);
 [maskRects, intEdgeRects, extMaskRects] = ...
-    computeGridRegionPx(screenXpx, screenYpx, gridSizePx, regionRect);
+    computeGridRegionPx(screenXpx, screenYpx, tileSizePx, regionRect);
 nTiles = size(maskRects, 2);
 
 % Precalculate "other‐tiles" complements
@@ -184,6 +194,23 @@ end
 
 %% Save sequence if completed
 fname = sprintf('stim_%s.csv', char(datetime('now', 'Format', 'yyyyMMdd_HHmm')));
-writematrix(allSeq', fname);
+
+% Calculate row & col in ROW-MAJOR
+rows = floor((allSeq-1)/nx) + 1;        % 1 at top, increments every nx
+cols = mod(allSeq-1, nx) + 1;           % 1 at left, wraps every nx
+
+% Map scanning positions → maskRects indices for accurate rectangles
+mappedIdx = row2col(allSeq);
+
+% Center‐of‐tile in pixels, then normalize to [0,1]
+xCenters = (maskRects(1, mappedIdx) + maskRects(3, mappedIdx)) / 2;
+yCenters = (maskRects(2, mappedIdx) + maskRects(4, mappedIdx)) / 2;
+xNorm    = xCenters ./ screenXpx;       % 0=left, 1=right
+yNorm    = yCenters ./ screenYpx;       % 0=top,  1=bottom
+
+% Save matrix as csv
+outMat = [allSeq(:), rows(:), cols(:), xNorm(:), yNorm(:)];
+writematrix(outMat, fname);
+
 fprintf('Saved %s\n', fname);
 end
