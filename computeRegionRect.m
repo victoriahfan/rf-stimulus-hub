@@ -29,9 +29,9 @@ if strcmpi(regionOpt, 'fullscreen')
 end
 
 % Calculate thirds based on full‐screen size
-thirdX    = floor(screenXpx/3);
+thirdX = floor(screenXpx/3);
 twoThirdX = ceil(2*screenXpx/3);
-thirdY    = floor(screenYpx/3);
+thirdY = floor(screenYpx/3);
 twoThirdY = ceil(2*screenYpx/3);
 
 % Split regionOpt tokens

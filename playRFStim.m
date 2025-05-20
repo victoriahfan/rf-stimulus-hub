@@ -1,5 +1,4 @@
 function playRFStim(movData, tileDeg, durInitGray, nCycle, isi, varargin)
-
 %% PLAYRFSTIM   Receptive-field mapping stimulus presentation
 %   Press ESC to abort early (no CSV saved).
 %
@@ -23,32 +22,32 @@ function playRFStim(movData, tileDeg, durInitGray, nCycle, isi, varargin)
 %
 % OUTPUT:
 %   Writes a CSV file named "stim_YYYYMMDD_HHMM.csv" containing five columns:
-%                       Position — tile index in the random sequence (1..nTiles)  
-%                       Row — tile row number (1 at top)  
-%                       Column — tile column number (1 at left)  
-%                       X — horizontal center of that tile, normalized [0=left … 1=right]  
-%                       Y — vertical center of that tile, normalized [0=top  … 1=bottom]
+%       Position — tile index in the random sequence (1..nTiles)  
+%       Row — tile row number (1 at top)  
+%       Column — tile column number (1 at left)  
+%       X — horizontal center of that tile, normalized [0=left … 1=right]  
+%       Y — vertical center of that tile, normalized [0=top  … 1=bottom]
 %
 % USAGE:
 %   playRFStim(rfMovie, 20, 1, 1, 4, 'regionOpt', 'sw+w+s+center', 'viewingDistanceCm', 20, 'ScreenNumber', 1)
 %
 % Written by Victoria Fan (08/2022); last modified 05/2025.
 
-%% — Psychtoolbox setup (so Screen('Screens') is available) —
+%% Psychtoolbox setup
 PsychDefaultSetup(2);
-Screen('Preference','SkipSyncTests',1);
-Screen('Preference','Verbosity',0);
+Screen('Preference', 'SkipSyncTests', 1);
+Screen('Preference', 'Verbosity', 0);
 
-% Ask PTB which screen IDs exist:
 availableScreens = Screen('Screens');    % e.g. [0] on mac, [0 1] on a two‐monitor PC
-defaultScreen    = max(availableScreens);
+defaultScreen = max(availableScreens);
 
 %% Validators
-isPosScalar    = @(x) validateattributes(x,{'numeric'},{'scalar','positive'});
-isNonNegScalar = @(x) validateattributes(x,{'numeric'},{'scalar','nonnegative'});
-isIntGE1       = @(x) validateattributes(x,{'numeric'},{'scalar','integer','positive'});
+isPosScalar    = @(x) validateattributes(x, {'numeric'}, {'scalar','positive'});
+isNonNegScalar = @(x) validateattributes(x, {'numeric'}, {'scalar','nonnegative'});
+isIntGE1       = @(x) validateattributes(x, {'numeric'}, {'scalar','integer','positive'});
 isCharOrStr    = @(s) ischar(s)||isstring(s);
-% Validator that also checks membership:
+
+% Validator that also checks membership
 isScreenNum    = @(x) assert( isnumeric(x) && isscalar(x) && any(x==availableScreens), ...
     'screenNumber must be one of [%s]', num2str(availableScreens) );
 isGammaTab     = @(x) isnumeric(x)&&size(x,2)==3;
@@ -58,25 +57,24 @@ p = inputParser;
 p.FunctionName  = mfilename;
 p.CaseSensitive = false;
 
-% Required positional:
-addRequired(p, 'movData',       @(x) validateattributes(x,{'numeric'},{'3d','nonempty'}));
-addRequired(p, 'tileDeg',       isPosScalar);
-addRequired(p, 'durInitGray',   isNonNegScalar);
-addRequired(p, 'nCycle',        isIntGE1);
-addRequired(p, 'isi',           isNonNegScalar);
+% Required positional
+addRequired(p, 'movData', @(x) validateattributes(x, {'numeric'}, {'3d', 'nonempty'}));
+addRequired(p, 'tileDeg', isPosScalar);
+addRequired(p, 'durInitGray', isNonNegScalar);
+addRequired(p, 'nCycle', isIntGE1);
+addRequired(p, 'isi', isNonNegScalar);
 
-% Optional name–value (with dynamic default for screenNumber):
-addParameter(p, 'regionOpt',         'full',            isCharOrStr);
-addParameter(p, 'viewingDistanceCm', 20,                isPosScalar);
-addParameter(p, 'screenNumber',      defaultScreen,     isScreenNum);
-addParameter(p, 'gammaTable',        [],                isGammaTab);
+% Optional name–value
+addParameter(p, 'regionOpt', 'full', isCharOrStr);
+addParameter(p, 'viewingDistanceCm', 20, isPosScalar);
+addParameter(p, 'screenNumber', defaultScreen, isScreenNum);
+addParameter(p, 'gammaTable', [], isGammaTab);
 
-% Parse both positional + name/value:
+% Parse both positional + name/value
 parse(p, movData, tileDeg, durInitGray, nCycle, isi, varargin{:});
 R = p.Results;
 
 %% Psychtoolbox & screen setup
-
 [window, windowRect] = PsychImaging('OpenWindow', R.screenNumber, .5);
 Priority(MaxPriority(window));
 screenXpx = windowRect(3);
@@ -89,7 +87,7 @@ if tileSizePx > screenXpx || tileSizePx > screenYpx
     error('Tile %d px too big for screen [%d×%d].', tileSizePx, screenXpx, screenYpx);
 end
 
-destRect = [0,0,screenXpx,screenYpx];
+destRect = [0, 0, screenXpx, screenYpx];
 indRect = [screenXpx-200, screenYpx-200, screenXpx, screenYpx];
 
 %% Gamma table (cached)
@@ -111,12 +109,13 @@ else
     end
     Screen('LoadNormalizedGammaTable', R.screenNumber, defaultGamTab);
 end
+
 Screen('BlendFunction', window, 'GL_SRC_ALPHA','GL_ONE_MINUS_SRC_ALPHA');
 
-%% Precalculate everything outside the trial loop
+%% Precalculate stuff
 % Textures
 nFrame = size(R.movData, 3);
-movieTextures = arrayfun(@(f) Screen('MakeTexture', window,R.movData(:,:,f)), 1:nFrame);
+movieTextures = arrayfun(@(f) Screen('MakeTexture', window, R.movData(:,:,f)), 1:nFrame);
 
 % Region & mask rectangles
 regionRect = computeRegionRect(R.regionOpt, tileSizePx, screenXpx, screenYpx);
@@ -124,7 +123,7 @@ regionRect = computeRegionRect(R.regionOpt, tileSizePx, screenXpx, screenYpx);
     computeGridRegionPx(screenXpx, screenYpx, tileSizePx, regionRect);
 nTiles = size(maskRects, 2);
 
-% Precalculate "other‐tiles" complements
+% "Other‐tiles" complements
 allIdx = 1:nTiles;
 complements = arrayfun(@(i) allIdx(allIdx~=i), 1:nTiles, 'UniformOutput', false);
 
@@ -170,7 +169,7 @@ for cyc = 1:R.nCycle
 
         if exitNow, break; end % break out of tile loop
 
-        % inter-stimulus gray
+        % Inter-stimulus gray
         Screen('FillRect', window, .5);
         Screen('Flip', window);
         WaitSecs(R.isi);
@@ -196,8 +195,8 @@ end
 fname = sprintf('stim_%s.csv', char(datetime('now', 'Format', 'yyyyMMdd_HHmm')));
 
 % Calculate row & col in ROW-MAJOR
-rows = floor((allSeq-1)/nx) + 1;        % 1 at top, increments every nx
-cols = mod(allSeq-1, nx) + 1;           % 1 at left, wraps every nx
+rows = floor((allSeq-1)/nx) + 1; % 1 at top, increments every nx
+cols = mod(allSeq-1, nx) + 1; % 1 at left, wraps every nx
 
 % Map scanning positions → maskRects indices for accurate rectangles
 mappedIdx = row2col(allSeq);
@@ -205,8 +204,8 @@ mappedIdx = row2col(allSeq);
 % Center‐of‐tile in pixels, then normalize to [0,1]
 xCenters = (maskRects(1, mappedIdx) + maskRects(3, mappedIdx)) / 2;
 yCenters = (maskRects(2, mappedIdx) + maskRects(4, mappedIdx)) / 2;
-xNorm    = xCenters ./ screenXpx;       % 0=left, 1=right
-yNorm    = yCenters ./ screenYpx;       % 0=top,  1=bottom
+xNorm    = xCenters ./ screenXpx; % 0=left, 1=right
+yNorm    = yCenters ./ screenYpx; % 0=top,  1=bottom
 
 % Save matrix as csv
 outMat = [allSeq(:), rows(:), cols(:), xNorm(:), yNorm(:)];

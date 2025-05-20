@@ -1,15 +1,15 @@
 function [maskRects, internalEdgeRects, extMaskRects] = computeGridRegionPx(screenX, screenY, sq, regionRect)
 %% COMPUTEGRIDREGIONPX   Calculate tile and mask rectangles for a region
 % INPUTS:
-%   screenX            - scalar: total screen width in pixels
-%   screenY            - scalar: total screen height in pixels
-%   sq                 - scalar: tile side length in pixels
-%   regionRect         - 1×4 vector [x1, y1, x2, y2]: bounding box of region (px)
+%   screenX            scalar — total screen width in pixels
+%   screenY            scalar — total screen height in pixels
+%   sq                 scalar — tile side length in pixels
+%   regionRect         1×4 vector [x1, y1, x2, y2] — bounding box of region (px)
 %
 % OUTPUTS:
-%   maskRects          - 4×N array: each column is [x1; y1; x2; y2] for a tile
-%   internalEdgeRects  - 4×M array: padding‐strip rectangles inside the region
-%   extMaskRects       - 4×K array: rectangles masking everything outside the region
+%   maskRects          4×N array — each column is [x1; y1; x2; y2] for a tile
+%   internalEdgeRects  4×M array — padding‐strip rectangles inside the region
+%   extMaskRects       4×K array — rectangles masking everything outside the region
 %
 % USAGE:
 %   [maskRects, internalEdgeRects, extMaskRects] = ...
@@ -18,16 +18,16 @@ function [maskRects, internalEdgeRects, extMaskRects] = computeGridRegionPx(scre
 % Written by Victoria Fan (05/2025); last modified 05/2025.
 
 % Calculate tile grid & padding inside a region
-rW = regionRect(3)-regionRect(1);      % region width in px
-rH = regionRect(4)-regionRect(2);      % region height in px
-nx = floor(rW/sq);                     % number of tiles fitting horizontally
-ny = floor(rH/sq);                     % number of tiles fitting vertically
+rW = regionRect(3)-regionRect(1); % region width in px
+rH = regionRect(4)-regionRect(2); % region height in px
+nx = floor(rW/sq); % number of tiles fitting horizontally
+ny = floor(rH/sq); % number of tiles fitting vertically
 
 % Calculate leftover pixels and half‐padding on each side
-remW = rW - nx*sq;                         % extra width beyond whole tiles
-xPad = floor(remW/2);                      % left/right padding in px
-remH = rH - ny*sq;                         % extra height beyond whole tiles
-yPad = floor(remH/2);                      % top/bottom padding in px
+remW = rW - nx*sq; % extra width beyond whole tiles
+xPad = floor(remW/2); % left/right padding in px
+remH = rH - ny*sq; % extra height beyond whole tiles
+yPad = floor(remH/2); % top/bottom padding in px
 
 % Preallocate array for each tile's [x1; y1; x2; y2]
 maskRects = zeros(4, nx*ny);
