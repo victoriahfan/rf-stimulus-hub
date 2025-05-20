@@ -8,9 +8,11 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 
 ## Demo
 
-<img src="docs/demo.gif" alt="RF Stimulus Hub Demo" width="400" />
+<img src="docs/demo.gif" alt="Demo" width="200"
+     style="vertical-align: middle; margin-right: 1em;" />
+Tiles are numbered row-wise from top-left to bottom-right, with the first
+index representing the row and the second index the column.
 
-Tiles are numbered row-wise from top-left to bottom-right, with the first index representing the row and the second index representing the column.
 For example (3×3 grid):
 
 ```plaintext
@@ -21,7 +23,6 @@ For example (3×3 grid):
 ├───────────┼───────────┼───────────┤
 │ (3,1) = 7 │ (3,2) = 8 │ (3,3) = 9 │
 └───────────┴───────────┴───────────┘
-```
 
 ---
 
@@ -69,11 +70,10 @@ RFStimGUI
    * Viewing distance (cm)
    * Tile size (deg)
    * Initial gray screen duration (s)
-   * Stimulus duration (s)
    * Inter-stimulus interval (s)
    * Number of cycles
-3. **Preview**: Click on the preview area to verify region selection and gamma-corrected display.
-4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** at any time to abort safely.
+3. **Preview**: Click on the preview area to verify region selection.
+4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** during any stimulus presentation to abort safely.
 
 ### Command‐Line Usage
 
@@ -86,8 +86,7 @@ playRFStim( ...
     4,                   ... % isi (s)
     'regionOpt', 'full',  ... % region selection
     'viewingDistanceCm', 20,... % viewing distance
-    'screenNumber', 0        ... % display screen index
-);
+    'screenNumber', 0);        ... % display screen index
 ```
 
 ---
