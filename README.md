@@ -2,7 +2,7 @@
 
 [![MATLAB R2023a](https://img.shields.io/badge/MATLAB-R2023a-blue)](https://www.mathworks.com/products/matlab.html)
 
-A MATLAB application for mapping neural receptive fields. Allows users to select one or more quadrants for focused RF mapping or subdivide those quadrants into finer grids to probe local RF structure. The app supports default dense noise stimuli, and it allows loading custom patterns, sparse noise, or natural scenes. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
+A MATLAB application for mapping receptive fields in neurons. Allows users to select one or more quadrants for focused RF mapping and to further subdivide those quadrants into finer grids to probe RF structure. Supports default dense noise stimuli and allows loading of custom patterns, sparse noise, or natural scenes. Includes an interactive interface offering real-time previews and intuitive mouse-based region selection to streamline experiment setup and execution.
 
 ---
 
@@ -10,8 +10,17 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 
 Tiles are numbered row-wise from top-left to bottom-right, with the first index representing the row and the second index the column.
 
-<img src="docs/demo.gif" alt="Demo" width="200"
-     style="vertical-align: middle; margin-right: 1em;" />
+<img
+  src="docs/demo.gif"
+  alt="Demo"
+  style="
+    vertical-align: middle;
+    margin-right: 1em;
+    width: 80%;       /* fill 80% of the container */
+    max-width: 600px; /* but never wider than 600px */
+    height: auto;     /* preserve aspect ratio */
+  "
+/>
 
 ---
 
