@@ -6,6 +6,26 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 
 ---
 
+## Demo
+
+<img src="docs/demo.gif" alt="Demo" width="200"
+     style="vertical-align: middle; margin-right: 1em;" />
+Tiles are numbered row-wise from top-left to bottom-right, with the first
+index representing the row and the second index the column.
+
+For example (3×3 grid):
+
+```plaintext
+┌───────────┬───────────┬───────────┐
+│ (1,1) = 1 │ (1,2) = 2 │ (1,3) = 3 │
+├───────────┼───────────┼───────────┤
+│ (2,1) = 4 │ (2,2) = 5 │ (2,3) = 6 │
+├───────────┼───────────┼───────────┤
+│ (3,1) = 7 │ (3,2) = 8 │ (3,3) = 9 │
+└───────────┴───────────┴───────────┘
+
+---
+
 ## Requirements
 
 * **MATLAB R2023a**. App created and tested with this MATLAB version. Older versions may be incompatible.
@@ -50,11 +70,10 @@ RFStimGUI
    * Viewing distance (cm)
    * Tile size (deg)
    * Initial gray screen duration (s)
-   * Stimulus duration (s)
    * Inter-stimulus interval (s)
    * Number of cycles
-3. **Preview**: Click on the preview area to verify region selection and gamma-corrected display.
-4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** at any time to abort safely.
+3. **Preview**: Click on the preview area to verify region selection.
+4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** during any stimulus presentation to abort safely.
 
 ### Command‐Line Usage
 
@@ -65,10 +84,9 @@ playRFStim( ...
     1,                   ... % durInitGray (s)
     2,                   ... % nCycle
     4,                   ... % isi (s)
-    'regionOpt','full',  ... % region selection
-    'viewingDistanceCm',20,... % viewing distance
-    'screenNumber',0        ... % display screen index
-);
+    'regionOpt', 'full',  ... % region selection
+    'viewingDistanceCm', 20,... % viewing distance
+    'screenNumber', 0);        ... % display screen index
 ```
 
 ---
@@ -79,7 +97,7 @@ playRFStim( ...
 * **deg2px.m**: `px = deg2px(deg, distCm, screenWidthPx, screenWidthCm)`.
 * **computeRegionRect.m**: Returns `[x y w h]` for regions (`'full', 'tl', 'br', etc.`).
 * **computeGridRegionPx.m**: Calculates pixel rectangles for each tile and mask within a region.
-* **checkEscape.m**: Polls for ESC key to terminate presentation safely.
+* **checkEscape.m**: Polls for ESC key to terminate stimulus presentation safely.
 
 ---
 
