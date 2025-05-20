@@ -8,7 +8,7 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 
 ## Demo
 
-![RF Stimulus Hub Demo](docs/demo.gif)
+<img src="docs/demo.gif" alt="RF Stimulus Hub Demo" width="400" />
 
 Tiles are numbered row-wise from top-left to bottom-right, with the first index representing the row and the second index representing the column.
 For example (3×3 grid):
