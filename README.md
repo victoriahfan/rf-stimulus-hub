@@ -8,26 +8,10 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 
 ## Demo
 
-<table>
-  <tr>
-    <td valign="top">
-      <img src="docs/demo.gif" alt="RF Stimulus Hub Demo" width="200" />
-    </td>
-    <td valign="top" style="padding-left:1em">
-      <pre>
-┌───────────┬───────────┬───────────┐
-│ (1,1) = 1 │ (1,2) = 2 │ (1,3) = 3 │
-├───────────┼───────────┼───────────┤
-│ (2,1) = 4 │ (2,2) = 5 │ (2,3) = 6 │
-├───────────┼───────────┼───────────┤
-│ (3,1) = 7 │ (3,2) = 8 │ (3,3) = 9 │
-└───────────┴───────────┴───────────┘
-      </pre>
-    </td>
-  </tr>
-</table>
-
 Tiles are numbered row-wise from top-left to bottom-right, with the first index representing the row and the second index the column.
+
+<img src="docs/demo.gif" alt="Demo" width="200"
+     style="vertical-align: middle; margin-right: 1em;" />
 
 ---
 
