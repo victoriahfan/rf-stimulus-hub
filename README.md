@@ -6,6 +6,25 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 
 ---
 
+## Demo
+
+![RF Stimulus Hub Demo](docs/demo.gif)
+
+Tiles are numbered row-wise from top-left to bottom-right, with the first index representing the row and the second index representing the column.
+For example (3×3 grid):
+
+```plaintext
+┌───────────┬───────────┬───────────┐
+│ (1,1) = 1 │ (1,2) = 2 │ (1,3) = 3 │
+├───────────┼───────────┼───────────┤
+│ (2,1) = 4 │ (2,2) = 5 │ (2,3) = 6 │
+├───────────┼───────────┼───────────┤
+│ (3,1) = 7 │ (3,2) = 8 │ (3,3) = 9 │
+└───────────┴───────────┴───────────┘
+```
+
+---
+
 ## Requirements
 
 * **MATLAB R2023a**. App created and tested with this MATLAB version. Older versions may be incompatible.
@@ -65,9 +84,9 @@ playRFStim( ...
     1,                   ... % durInitGray (s)
     2,                   ... % nCycle
     4,                   ... % isi (s)
-    'regionOpt','full',  ... % region selection
-    'viewingDistanceCm',20,... % viewing distance
-    'screenNumber',0        ... % display screen index
+    'regionOpt', 'full',  ... % region selection
+    'viewingDistanceCm', 20,... % viewing distance
+    'screenNumber', 0        ... % display screen index
 );
 ```
 
@@ -79,7 +98,7 @@ playRFStim( ...
 * **deg2px.m**: `px = deg2px(deg, distCm, screenWidthPx, screenWidthCm)`.
 * **computeRegionRect.m**: Returns `[x y w h]` for regions (`'full', 'tl', 'br', etc.`).
 * **computeGridRegionPx.m**: Calculates pixel rectangles for each tile and mask within a region.
-* **checkEscape.m**: Polls for ESC key to terminate presentation safely.
+* **checkEscape.m**: Polls for ESC key to terminate stimulus presentation safely.
 
 ---
 
