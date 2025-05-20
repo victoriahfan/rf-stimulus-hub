@@ -15,6 +15,7 @@ A MATLAB application for mapping neural receptive fields. Allows users to select
 Tiles are numbered row-wise from top-left to bottom-right, with the first index representing the row and the second index representing the column.
 For example (3×3 grid):
 
+```plaintext
 ┌───────────┬───────────┬───────────┐
 │ (1,1) = 1 │ (1,2) = 2 │ (1,3) = 3 │
 ├───────────┼───────────┼───────────┤
@@ -22,6 +23,7 @@ For example (3×3 grid):
 ├───────────┼───────────┼───────────┤
 │ (3,1) = 7 │ (3,2) = 8 │ (3,3) = 9 │
 └───────────┴───────────┴───────────┘
+```
 
 ---
 
