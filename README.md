@@ -8,7 +8,7 @@ A MATLAB application for mapping receptive fields in neurons. Allows users to se
 
 ## Demo
 
-Tiles are numbered row-wise from top-left to bottom-right, with the first index representing the row and the second index the column.
+Tiles are numbered in row-major order from top-left to bottom-right. 
 
 <img
   src="docs/demo.gif"
@@ -21,6 +21,17 @@ Tiles are numbered row-wise from top-left to bottom-right, with the first index 
     height: auto;     /* preserve aspect ratio */
   "
 />
+
+---
+
+### Output
+
+A .csv file with five columns:
+1. Tile index presented
+2. Tile row number (left to right)
+3. Tile column number (top to bottom)
+4. X coordinate: horizontal center of that tile (can be fed into VisionGUI)
+5. Y coordinate: vertical center of that tile (can be fed into VisionGUI)
 
 ---
 
@@ -72,6 +83,8 @@ RFStimGUI
    * Number of cycles
 3. **Preview**: Click on the preview area to verify region selection.
 4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** during any stimulus presentation to abort safely.
+
+---
 
 ### Command‐Line Usage
 
