@@ -24,9 +24,7 @@ Tiles are numbered in row-major order from top-left to bottom-right.
 
 ---
 
-### Output
-
-A .csv file with five columns:
+Output is a .csv file with five columns:
 1. Tile index presented
 2. Tile row number (left to right)
 3. Tile column number (top to bottom)
