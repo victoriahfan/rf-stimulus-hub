@@ -42,19 +42,19 @@ availableScreens = Screen('Screens');    % e.g. [0] on mac, [0 1] on a two‐mon
 defaultScreen = max(availableScreens);
 
 %% Validators
-isPosScalar    = @(x) validateattributes(x, {'numeric'}, {'scalar','positive'});
+isPosScalar = @(x) validateattributes(x, {'numeric'}, {'scalar','positive'});
 isNonNegScalar = @(x) validateattributes(x, {'numeric'}, {'scalar','nonnegative'});
-isIntGE1       = @(x) validateattributes(x, {'numeric'}, {'scalar','integer','positive'});
-isCharOrStr    = @(s) ischar(s)||isstring(s);
+isIntGE1 = @(x) validateattributes(x, {'numeric'}, {'scalar','integer','positive'});
+isCharOrStr = @(s) ischar(s)||isstring(s);
 
 % Validator that also checks membership
-isScreenNum    = @(x) assert( isnumeric(x) && isscalar(x) && any(x==availableScreens), ...
+isScreenNum = @(x) assert( isnumeric(x) && isscalar(x) && any(x==availableScreens), ...
     'screenNumber must be one of [%s]', num2str(availableScreens) );
-isGammaTab     = @(x) isnumeric(x)&&size(x,2)==3;
+isGammaTab = @(x) isnumeric(x)&&size(x,2)==3;
 
 %% Parser
 p = inputParser;
-p.FunctionName  = mfilename;
+p.FunctionName = mfilename;
 p.CaseSensitive = false;
 
 % Required positional
@@ -133,6 +133,13 @@ nx = numel(unique(x1)); ny = numel(unique(y1));
 colIdx = reshape(1:nTiles, ny, nx).';  % transpose in one step
 row2col = colIdx(:);
 
+%% Initial gray screen
+if showGray(window, R.durInitGray)
+    sca; 
+    fprintf('Aborted during initial gray screen.\n'); 
+    return;
+end
+
 %% Main stimulus loop
 exitNow = false;
 
@@ -149,9 +156,9 @@ for cyc = 1:R.nCycle
             cyc, R.nCycle, k, nTiles, rm(k), (cyc-1)*nTiles + k, nTrials);
 
         for f = 1:nFrame
-            if checkEscape() % poll ESC
+            if checkEscape()
                 exitNow = true;
-                break; % break out of frame loop
+                break;
             end
             Screen('DrawTexture', window, movieTextures(f), [], destRect);
 
@@ -167,15 +174,12 @@ for cyc = 1:R.nCycle
             Screen('Flip', window);
         end
 
-        if exitNow, break; end % break out of tile loop
-
-        % Inter-stimulus gray
-        Screen('FillRect', window, .5);
-        Screen('Flip', window);
-        WaitSecs(R.isi);
+        if showGray(window, R.isi)
+            exitNow = true; break;
+        end
     end
 
-    if exitNow, break; end % break out of cycle loop
+    if exitNow, break; end
 
     allSeq(ptr:ptr+nTiles-1) = rm;
     ptr = ptr + nTiles;
@@ -187,7 +191,7 @@ Priority(0);
 sca;
 
 if exitNow
-    fprintf('playRFStim: I shtawped the run (ESC pressed).\n');
+    fprintf('Aborted during stimulus. Shtawped.\n');
     return;
 end
 
