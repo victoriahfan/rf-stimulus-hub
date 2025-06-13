@@ -40,7 +40,7 @@ Output is a .csv file with five columns:
 
 **Recommended:** Dual-monitor setup (one for stimulus, one for control). If using a single monitor, check that screenNumber is set to 0 on macOS or 1 on Windows.
 
-### macOS: Enabling ESC-to-Abort
+## macOS: Enabling ESC-to-Abort
 
 On macOS, pressing ESC key won’t reach MATLAB unless you grant it the proper permissions. In **System Settings → Privacy & Security**, add **MATLAB** to all three of:
 * **Accessibility**  
@@ -54,6 +54,7 @@ On macOS, pressing ESC key won’t reach MATLAB unless you grant it the proper p
 ```plaintext
 rf-stimulus-hub/            # Repository root
 ├── RFStimGUI.mlapp       # App Designer GUI
+├── showGray.m            # Gray screen helper function
 ├── playRFStim.m          # Core stimulus-presentation routine
 ├── deg2px.m              # Converts degrees → pixels
 ├── computeRegionRect.m   # Defines named screen-region rectangles
@@ -85,7 +86,7 @@ RFStimGUI
    * Inter-stimulus interval (s)
    * Number of cycles
 3. **Preview**: Click on the preview area to verify region selection.
-4. **Start**: Click **Start** to run the RF mapping stimulus. Press **Esc** during any stimulus presentation to abort safely.
+4. **Start**: Click **Start** to run the RF mapping stimulus. Press **ESC** to abort safely.
 
 ---
 
@@ -105,20 +106,9 @@ playRFStim( ...
 
 ---
 
-## Function Reference
-
-* **playRFStim.m**: Main loop—renders frames (with gamma correction), unmasks tiles, logs events, enforces timings.
-* **deg2px.m**: `px = deg2px(deg, distCm, screenWidthPx, screenWidthCm)`.
-* **computeRegionRect.m**: Returns `[x y w h]` for regions (`'full', 'tl', 'br', etc.`).
-* **computeGridRegionPx.m**: Calculates pixel rectangles for each tile and mask within a region.
-* **checkEscape.m**: Polls for ESC key to terminate stimulus presentation safely.
-
----
-
 ## Future Support
 
 * **Non‑contiguous region selection**: Arbitrary quadrant combinations.
-* **Global abort**: ESC works even when GUI is unfocused.
 * **Standalone compilation**: Run GUI without MATLAB.
 
 ---
