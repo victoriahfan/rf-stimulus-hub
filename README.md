@@ -37,8 +37,15 @@ Output is a .csv file with five columns:
 * **App Designer**. Required if modifying `.mlapp`.
 * **Psychtoolbox**
 * **Image Processing Toolbox**
- 
+
 **Recommended:** Dual-monitor setup (one for stimulus, one for control). If using a single monitor, check that screenNumber is set to 0 on macOS or 1 on Windows.
+
+### macOS: Enabling ESC-to-Abort
+
+On macOS, pressing ESC key won’t reach MATLAB unless you grant it the proper permissions. In **System Settings → Privacy & Security**, add **MATLAB** to all three of:
+* **Accessibility**  
+* **Input Monitoring**  
+* **Full Disk Access**  
 
 ---
 
